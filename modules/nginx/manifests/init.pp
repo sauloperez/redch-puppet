@@ -15,6 +15,12 @@ class nginx {
       source => "puppet:///modules/nginx/nginx.conf",
       mode   => 644,
       owner  => root,
-      group  => root
+      group  => root;
+    "/etc/nginx/sites-enabled/redch":
+      source  => "puppet:///modules/nginx/redch",
+      owner   => root,
+      group   => root,
+      notify  => Service["nginx"],
+      require => Package["nginx"];
   }
 }
