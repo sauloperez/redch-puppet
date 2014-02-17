@@ -1,13 +1,33 @@
 class nginx {
-  package {
-    "nginx":
-      ensure => present,
-      before => File["/etc/nginx/nginx.conf"]
+  file {
+    "/tmp/passenger-4.0.37.gem":
+      ensure  => present,
+      mode    => 777,
+      owner   => root,
+      group   => root,
+      source  => "puppet:///modules/nginx/packages/passenger-4.0.37.gem"
+  }
+  exec {
+    "gem install /tmp/passenger-4.0.37.gem":
+      user    => root,
+      group   => root,
+      alias   => "install_passenger",
+      timeout => 0,
+      unless  => "gem list -i passenger -v4.0.37",
+      require => File["/tmp/passenger-4.0.37.gem"]
+  }
+  exec {
+    "passenger-install-nginx-module --auto --auto-download":
+      user     => root,
+      group    => root,
+      alias    => "passenger_nginx_module",
+      before   => File["/etc/nginx/nginx.conf"],
+      require  => Exec["install_passenger"]
   }
   service {
     "nginx":
-      ensure => true,
-      enable => true,
+      ensure    => true,
+      enable    => true,
       subscribe => File["/etc/nginx/nginx.conf"]
   }
   file {
@@ -21,6 +41,6 @@ class nginx {
       owner   => root,
       group   => root,
       notify  => Service["nginx"],
-      require => Package["nginx"];
+      require => Exec["passenger_nginx_module"];
   }
 }
