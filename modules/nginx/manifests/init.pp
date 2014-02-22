@@ -17,30 +17,67 @@ class nginx {
       require => File["/tmp/passenger-4.0.37.gem"]
   }
   exec {
-    "passenger-install-nginx-module --auto --auto-download":
-      user     => root,
-      group    => root,
-      alias    => "passenger_nginx_module",
-      before   => File["/etc/nginx/nginx.conf"],
-      require  => Exec["install_passenger"]
+    "passenger-install-nginx-module --auto --auto-download --prefix=/etc/nginx":
+      user    => root,
+      group   => root,
+      alias   => "passenger_nginx_module",
+      timeout => 0,
+      before  => File["/etc/nginx/conf/nginx.conf"],
+      require => Exec["install_passenger"]
+  }
+  file {
+    "/etc/nginx/conf/passenger.conf":
+      mode   => 644,
+      owner  => root,
+      group  => root,
+      alias  => "passenger_conf",
+      notify => Service["nginx"],
+      source => "Puppet:///modules/nginx/passenger.conf"
+  }
+  exec {
+    "mkdir /var/log/nginx":
+      unless => "test -d /var/log/nginx"
+  }
+  file {
+    "/etc/init.d/nginx":
+      ensure  => present,
+      owner   => "root",
+      group   => "root",
+      mode    => 755,
+      source  => "puppet:///modules/nginx/nginx",
+      require => Exec["passenger_nginx_module"]
   }
   service {
     "nginx":
       ensure    => true,
       enable    => true,
-      subscribe => File["/etc/nginx/nginx.conf"]
+      subscribe => File["/etc/nginx/conf/nginx.conf"],
+      require   => [File["/etc/nginx/conf/nginx.conf"], File["/etc/init.d/nginx"]]
+  }
+  exec {
+    "mkdir /etc/nginx/sites-enabled":
+      alias  => "sites_enabled",
+      unless => "test -d /etc/nginx/sites-enabled"
   }
   file {
-    "/etc/nginx/nginx.conf":
-      source => "puppet:///modules/nginx/nginx.conf",
+    "/etc/nginx/conf/nginx.conf":
       mode   => 644,
       owner  => root,
-      group  => root;
-    "/etc/nginx/sites-enabled/redch":
-      source  => "puppet:///modules/nginx/redch",
-      owner   => root,
-      group   => root,
-      notify  => Service["nginx"],
-      require => Exec["passenger_nginx_module"];
+      group  => root,
+      source => "puppet:///modules/nginx/nginx.conf";
+    "/etc/nginx/sites-enabled/redch.conf":
+      source => "puppet:///modules/nginx/redch.conf",
+      owner  => root,
+      group  => root,
+      notify => Service["nginx"],
+      require  => [Exec["sites_enabled"], Exec["passenger_nginx_module"]],
+  }
+  file { 
+    '/etc/nginx/mime.types':
+      source => 'puppet:///modules/nginx/mime.types',
+      mode   => 644,
+      owner  => root,
+      group  => root,
+      notify => Service["nginx"],
   }
 }
