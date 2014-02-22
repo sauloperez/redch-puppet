@@ -32,7 +32,7 @@ class nginx {
       group  => root,
       alias  => "passenger_conf",
       notify => Service["nginx"],
-      source => "Puppet:///modules/nginx/passenger.conf"
+      source => "puppet:///modules/nginx/passenger.conf"
   }
   exec {
     "mkdir /var/log/nginx":
