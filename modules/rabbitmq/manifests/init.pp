@@ -8,11 +8,9 @@ class rabbitmq {
     subscribe => Exec['rabbitmq-plugins']
   }
   exec { 'rabbitmq-plugins':
-    environment => "HOME=/root",
-    path => '/usr/lib/rabbitmq/bin/'
-    command => "rabbitmq-plugins enable rabbitmq_management",
-    require => Package["rabbitmq-server"],
+    environment => "HOME=/home/ubuntu",
+    command => '/usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management',
+    require => Package['rabbitmq-server'],
     notify => Service['rabbitmq-server']
   }
 }
-
