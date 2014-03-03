@@ -4,7 +4,7 @@ node 'ip-172-31-10-77' {
 }
 
 # Webapp
-node 'ip-172-31-7-179' {
+node 'ip-172-31-7-179', 'webapp' {
   include nginx
   include redch
 }
