@@ -32,7 +32,7 @@ class nginx {
       group  => root,
       alias  => "passenger_conf",
       notify => Service["nginx"],
-      source => "puppet:///modules/nginx/passenger.conf"
+      source => "Puppet:///modules/nginx/passenger.conf"
   }
   exec {
     "mkdir /var/log/nginx":
@@ -72,7 +72,7 @@ class nginx {
       notify => Service["nginx"],
       require  => [Exec["sites_enabled"], Exec["passenger_nginx_module"]],
   }
-  file { 
+  file {
     '/etc/nginx/mime.types':
       source => 'puppet:///modules/nginx/mime.types',
       mode   => 644,
