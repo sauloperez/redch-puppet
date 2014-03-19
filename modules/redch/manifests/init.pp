@@ -4,8 +4,8 @@ class redch {
      "/var/redch/shared/",
      "/var/redch/shared/config/"]:
     ensure => directory,
-    owner => vagrant,
-    group => vagrant,
+    owner => ubuntu,
+    group => ubuntu,
     mode => 775
   }
   package {
