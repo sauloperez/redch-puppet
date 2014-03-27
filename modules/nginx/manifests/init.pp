@@ -41,8 +41,8 @@ class nginx {
   file {
     "/etc/init.d/nginx":
       ensure  => present,
-      owner   => "root",
-      group   => "root",
+      owner   => root,
+      group   => root,
       mode    => 755,
       source  => "puppet:///modules/nginx/nginx",
       require => Exec["passenger_nginx_module"]

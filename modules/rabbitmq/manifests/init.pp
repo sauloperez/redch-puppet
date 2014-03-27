@@ -1,6 +1,6 @@
 class rabbitmq {
   package { 'rabbitmq-server':
-    ensure => present    
+    ensure => present
   }
   service { 'rabbitmq-server':
     ensure => true,
