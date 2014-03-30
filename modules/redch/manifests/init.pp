@@ -2,7 +2,10 @@ class redch {
   file {
     ["/var/redch/",
      "/var/redch/shared/",
-     "/var/redch/shared/config/"]:
+     "/var/redch/shared/config/",
+     "/var/redch/shared/log/",
+     "/var/redch/shared/tmp/",
+     "/var/redch/shared/pids/"]:
     ensure => directory,
     owner => ubuntu,
     group => ubuntu,
