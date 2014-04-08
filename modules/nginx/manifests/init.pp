@@ -80,4 +80,12 @@ class nginx {
       group  => root,
       notify => Service["nginx"],
   }
+  file {
+    '/etc/init/nginx.conf':
+      source => 'puppet:///modules/nginx/nginx_upstart',
+      mode   => 644,
+      owner  => root,
+      group  => root,
+      require => [Exec["passenger_nginx_module"], File["/etc/nginx/conf/nginx.conf"]]
+  }
 }

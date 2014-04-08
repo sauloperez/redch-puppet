@@ -9,7 +9,8 @@ class redch {
     ensure => directory,
     owner => ubuntu,
     group => ubuntu,
-    mode => 775
+    mode => 775,
+    alias => dir_tree
   }
   file { "/etc/init/redch.conf":
     ensure => present,
@@ -17,6 +18,14 @@ class redch {
     group  => root,
     mode   => 644,
     source => "puppet:///modules/redch/redch.conf"
+  }
+  file { "/var/redch/shared/env_ruby_wrapper":
+    ensure => present,
+    owner  => root,
+    group  => root,
+    mode   => 755,
+    source => "puppet:///modules/redch/env_ruby_wrapper",
+    require => File["dir_tree"]
   }
   package {
     "bundler":

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export RACK_ENV="production"
+export AMQP_HOST=54.72.167.118
+
+exec "/usr/local/bin/ruby" "$@"
