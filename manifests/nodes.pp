@@ -8,3 +8,8 @@ node 'ip-172-31-7-179', 'webapp' {
   include nginx
   include redch
 }
+
+# SOS
+node 'ip-172-31-8-108' {
+  include tomcat
+}
