@@ -3,6 +3,15 @@ class tomcat {
     ensure => installed,
   }
 
+  package { "openjdk-7-jdk":
+    ensure => installed,
+  }
+
+  exec { "set default java":
+    command => "update-alternatives --set java /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java",
+    require => Package["openjdk-7-jdk"],
+  }
+
   package { "maven":
     ensure => installed,
   }
