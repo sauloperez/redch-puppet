@@ -10,6 +10,7 @@ node 'ip-172-31-7-179', 'webapp' {
 }
 
 # SOS
-node 'ip-172-31-8-108' {
+node 'ip-172-31-32-159' {
   include tomcat
+  include sos
 }
