@@ -27,11 +27,13 @@ class tomcat {
   }
 
   file { "/etc/tomcat7/tomcat-users.xml":
-    ensure => file,
-    owner  => root,
+    ensure  => file,
+    owner   => root,
+    group   => tomcat7,
+    mode    => 644,
     require => Package["tomcat7"],
-    notify => Service["tomcat7"],
-    source => "Puppet:///modules/tomcat/tomcat-users.xml"
+    notify  => Service["tomcat7"],
+    source  => "Puppet:///modules/tomcat/tomcat-users.xml"
   }
 
   service { "tomcat7":
