@@ -5,11 +5,12 @@ stop on runlevel [!2345]
 
 env APP=/var/redch/current/
 env BIN_PATH=/usr/local/lib/ruby/gems/2.0.0/gems/passenger-4.0.37/bin
-env ENVIRONMENT=production 
+env ENVIRONMENT=production
 env PORT=3000
 env PIDFILE=/var/redch/shared/pids/passenger.pid
 env LOGFILE=/var/redch/shared/log/passenger.log
 env HOME=/home/ubuntu
+env AMQP_HOST=54.72.167.118
 
 # Automatically restart process if crashed
 respawn
