@@ -11,7 +11,9 @@ class sos {
   }
 
   file { "/var/www/sos/shared/config/redch.properties":
-    ensure => link,
-    target => "/home/ubuntu/redch.properties"
+    mode   => 644,
+    owner  => ubuntu,
+    group  => tomcat7,
+    source => "puppet:///modules/sos/redch.properties"
   }
 }
