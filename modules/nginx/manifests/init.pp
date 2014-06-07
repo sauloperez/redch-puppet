@@ -16,15 +16,6 @@ class nginx {
       unless  => "gem list -i passenger -v4.0.37",
       require => File["/tmp/passenger-4.0.37.gem"]
   }
-  exec {
-    "passenger-install-nginx-module --auto --auto-download --prefix=/etc/nginx":
-      user    => root,
-      group   => root,
-      alias   => "passenger_nginx_module",
-      timeout => 0,
-      before  => File["/etc/nginx/conf/nginx.conf"],
-      require => Exec["install_passenger"]
-  }
   file {
     "/etc/nginx/conf/passenger.conf":
       mode   => 644,
@@ -45,7 +36,6 @@ class nginx {
       group   => root,
       mode    => 755,
       source  => "puppet:///modules/nginx/nginx",
-      require => Exec["passenger_nginx_module"]
   }
   service {
     "nginx":
@@ -70,7 +60,7 @@ class nginx {
       owner  => root,
       group  => root,
       notify => Service["nginx"],
-      require  => [Exec["sites_enabled"], Exec["passenger_nginx_module"]],
+      require  => Exec["sites_enabled"]
   }
   file {
     '/etc/nginx/mime.types':
@@ -86,6 +76,6 @@ class nginx {
       mode   => 644,
       owner  => root,
       group  => root,
-      require => [Exec["passenger_nginx_module"], File["/etc/nginx/conf/nginx.conf"]]
+      require => File["/etc/nginx/conf/nginx.conf"]
   }
 }
