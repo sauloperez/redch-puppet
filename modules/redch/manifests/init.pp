@@ -11,12 +11,12 @@ class redch {
     group => ubuntu,
     mode => 775
   }
-  file { "/etc/init/redch.conf":
+  file { "/etc/init/passenger_redch.conf":
     ensure => present,
     owner  => root,
     group  => root,
     mode   => 644,
-    source => "puppet:///modules/redch/redch.conf"
+    source => "puppet:///modules/redch/passenger_upstart"
   }
   file { "/var/redch/shared/env_ruby_wrapper":
     ensure => present,
