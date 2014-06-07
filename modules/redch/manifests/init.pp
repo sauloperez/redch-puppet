@@ -14,8 +14,8 @@ class redch {
 
   file { "/var/www/redch/shared/env_ruby_wrapper":
     ensure => present,
-    owner  => root,
-    group  => root,
+    owner  => ubuntu,
+    group  => ubuntu,
     mode   => 755,
     source => "puppet:///modules/redch/env_ruby_wrapper",
   }
