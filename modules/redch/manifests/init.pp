@@ -1,33 +1,22 @@
 class redch {
-  file {
-    ["/var/redch/",
-     "/var/redch/shared/",
-     "/var/redch/shared/config/",
-     "/var/redch/shared/log/",
-     "/var/redch/shared/tmp/",
-     "/var/redch/shared/pids/"]:
-    ensure => directory,
-    owner => ubuntu,
-    group => ubuntu,
-    mode => 775
+  user { 'ubuntu':
+    ensure => present
   }
-  file { "/etc/init/passenger_redch.conf":
-    ensure => present,
-    owner  => root,
-    group  => root,
-    mode   => 644,
-    source => "puppet:///modules/redch/passenger_upstart"
+  exec { 'passwd':
+    command => 'passwd -l ubuntu'
   }
-  file { "/var/redch/shared/env_ruby_wrapper":
+  exec { 'adduser':
+    command => 'adduser ubuntu admin'
+  }
+  exec { 'chown':
+    command => 'chown ubuntu:root /var/www'
+  }
+
+  file { "/var/www/redch/shared/env_ruby_wrapper":
     ensure => present,
-    owner  => root,
-    group  => root,
+    owner  => ubuntu,
+    group  => ubuntu,
     mode   => 755,
     source => "puppet:///modules/redch/env_ruby_wrapper",
-    require => File["/var/redch/shared/"]
-  }
-  package {
-    "bundler":
-      provider => gem
   }
 }
